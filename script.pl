@@ -8,6 +8,7 @@
          FILE: script.pl
 
         USAGE: ./script.pl file.pstat > file.fas
+               ./script.pl file.pstat > file.fas 2> file.txt
 
   DESCRIPTION: Reads the output from a ancestral state reconstruction in MrBayes
                and prints the most probable inferred state(s) in fasta format.
@@ -16,7 +17,7 @@
 
       OPTIONS: ---
 
- REQUIREMENTS: Requires specific format in the .pstat file. See Docs
+ REQUIREMENTS: Requires specific format in the .pstat file. See README-file. 
 
          BUGS: ---
 
