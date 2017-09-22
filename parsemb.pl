@@ -5,10 +5,10 @@
 
 =head2
 
-         FILE: script.pl
+         FILE: parsemb.pl
 
-        USAGE: ./script.pl file.pstat > file.fas
-               ./script.pl file.pstat > file.fas 2> file.txt
+        USAGE: ./parsemb.pl file.pstat > file.fas
+               ./parsemb.pl file.pstat > file.fas 2> file.txt
 
   DESCRIPTION: Reads the output from a ancestral state reconstruction in MrBayes
                and prints the most probable inferred state(s) in fasta format.
