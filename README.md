@@ -42,11 +42,11 @@ Run the script with the `.pstat` file as input. The resulting sequence is writte
 to standard out, while the details about state probabilities is printed on standard
 error.
 
-    ./parsemb.pl data.nex.pstat
+    ./parsemb.pl mix.nex.pstat
 
 or
 
-    ./parsemb.pl data.nex.pstat > ancestral.fas 2> ancestral.txt
+    ./parsemb.pl mix.nex.pstat > ancestral.fas 2> ancestral.txt
 
 
 ## Example 2: Ancestral sequence estimation
