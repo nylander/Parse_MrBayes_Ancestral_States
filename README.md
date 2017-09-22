@@ -4,11 +4,11 @@
 - Johan.Nylander\@nbis.se
 
 The software MrBayes have the capacity of inferring ancestral character states.
-The results are summarized in the `.p` file. This script parses the MrBayes output
-and saves the actual states or sequence, with the highest posterior probability
-as a fasta file.
+The results are summarized in the `.pstat` file. This script parses the MrBayes
+output and saves the actual states or sequence, with the highest posterior
+probability, as a fasta-formatted file.
 
-**NOTE: beta version - Caveat Emptor**
+**NOTE: Beta version - Caveat Emptor!**
 
 ## Set up MrBayes to do the ancestral reconstructions
 
