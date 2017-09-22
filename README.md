@@ -8,6 +8,8 @@ The results are summarized in the `.p` file. This script parses the MrBayes outp
 and saves the actual states or sequence, with the highest posterior probability
 as a fasta file.
 
+**NOTE: beta version - Caveat Emptor**
+
 ## Set up MrBayes to do the ancestral reconstructions
 
 Example [dataset](data/mix.nex) with combined DNA and morphological data.
