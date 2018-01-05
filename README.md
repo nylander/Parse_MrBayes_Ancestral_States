@@ -1,14 +1,12 @@
 # Parse MrBayes Ancestral States
 
-- 2017-09-22
-- Johan.Nylander\@nbis.se
+- Fri 05 Jan 2018
+- Johan.Nylander\@{nrm|nbis}.se
 
 The software MrBayes have the capacity of inferring ancestral character states.
 The results are summarized in the `.pstat` file. This script parses the MrBayes
 output and saves the actual states or sequence, with the highest posterior
 probability, as a fasta-formatted file.
-
-**NOTE: Beta version - Caveat Emptor!**
 
 ## Set up MrBayes to do the ancestral reconstructions
 
@@ -40,13 +38,23 @@ want to change default settings on substitution models, MCMC, etc.
 
 Run the script with the `.pstat` file as input. The resulting sequence is written
 to standard out, while the details about state probabilities is printed on standard
-error.
+error:
 
-    ./parsemb.pl mix.nex.pstat
+    $ ./parsemb.pl data/mix.nex.pstat
+    # MyConstraint
+    485	0=6.361512e-01	2=2.980698e-01	1=6.577902e-02	
+    486	1=9.579908e-01	0=4.200920e-02	
+    487	2=9.909044e-01	0=8.459564e-03	1=6.360484e-04	
+    488	1=9.693519e-01	0=2.806066e-02	2=2.587463e-03	
+    489	2=9.919600e-01	0=7.198033e-03	1=8.419819e-04	
+    490	0=5.094045e-01	2=4.638707e-01	1=2.672478e-02	
+    >MyConstraint Ancestral states at node MyConstraint
+    012120
 
-or
+Alternatively, if you wish to have the table (tab separated) and fasta in
+separate files:
 
-    ./parsemb.pl mix.nex.pstat > ancestral.fas 2> ancestral.txt
+    $ ./parsemb.pl data/mix.nex.pstat > ancestral.fas 2> ancestral.txt
 
 
 ## Example 2: Ancestral sequence estimation
@@ -71,6 +79,35 @@ We will use an example [file](data/dna.nex) with DNA data.
 
 #### Run the script:
 
-    ./parsemb.pl dna.nex.pstat
+Here we redirect the table to `/dev/null`, and fold the long sequence using the
+unix command `fold`:
 
+    $ ./parsemb.pl data/dna.nex.pstat 2> /dev/null | fold
+    >MyConstraint Ancestral states at node MyConstraint
+    TCTTGGTCCATTCTTGTGTGAGATATACGCTTTACTTGGTTCTCTATTTGGATGTGGCTCCATTTGGACAATGTGTATGA
+    TTGCTTTTGATAGGTACAATGTAATAGTGAAAGGTTTGGCTGGGAAGCCCTTAACAATCACCGGTGCAATTATACGCATA
+    ATTGGCCTTTGGGTCTGGGCCATTATTTGGACTATTGCGCCAATGTTTGGATGGAATCGGTTTTATGTACCTGAAGGTAA
+    CATGACAGCTTGCGGAACTGATTATTTAAGTAAAGACTGGTTCTCGAGGTCTTACATCCTTGTATACAGTATCTTCGTAT
+    ACTATATGCCGCTTTTCCTTATCATATACAGTTACTATTTTATCATCTCAGCTGTATCTGCTCACGAAAAAGCAATGCGC
+    GAACAGGCCAAAAAGATGAACGTAGCTTCTCTACGTTCATCTGACAATGCAAACACAAGTGCTGAGCATAAACTCGCAAA
+    GGTA
+
+Alternatively, we may filter the ancestral sequence and say, for example, that we
+should only give the states where the pp is above 0.99. The other states are given
+as an "unknown" character (default is "`?`", here we will use `N`):
+
+    $ ./parsemb.pl --cutoff 0.99 --unknown N data/dna.nex.pstat 2> /dev/null | fold
+    >MyConstraint Ancestral states at node MyConstraint
+    NNNNGGTCCATTCTTGTGTGAGATATACGCTTTACTTGGTTCTCTATTTGGATGTGGCTCCATTTGGACAATGTGTATGA
+    TTGCTTTTGATAGGTACAATGTAATAGTGAAAGGTTTGGCTGGGAAGCCCTTAACAATCACCGGTGCAATTATACGCATA
+    ATTGGCCTTTGGGTCTGGGCCATTATTTGGACTATTGCGCCAATGTTTGGATGGAATCGGNNNTATGTACCTGAAGGTAA
+    CATGACAGCTTGCGGAACTGATTATTTAAGTAAAGACTGGTTCTCGAGGTCTTACATCCTTGTATACAGTATCTTCGTAT
+    ACTATATGCCGCTTTTCCTTATCATATACAGTTACTATTTTATCATCTCAGCTGTATCTGCTCACGAAAAAGCAATGCGC
+    GAACAGGCCAAAAAGATGAACGTAGCTTCTCTACGTTCATCTGACAATGCAAACACAAGTGCTGAGCATAAACTCGCAAA
+    GGTA
+
+
+## Thanks to
+
+Thanks to Dr. Robin Beck, Univ. Salford, for feature suggestions.
 
