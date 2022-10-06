@@ -1,6 +1,6 @@
 # Parse MrBayes Ancestral States
 
-- Fri 05 Jan 2018
+- Last modified: tor okt 06, 2022  05:10
 - Johan.Nylander\@{nrm|nbis}.se
 
 The software MrBayes have the capacity of inferring ancestral character states.
@@ -8,16 +8,20 @@ The results are summarized in the `.pstat` file. This script parses the MrBayes
 output and saves the actual states or sequence, with the highest posterior
 probability, as a fasta-formatted file.
 
-## Set up MrBayes to do the ancestral reconstructions
+## Example 1: Ancestral state estimation for morphological characters
 
-Example [dataset](data/mix.nex) with combined DNA and morphological data.
-When reading the data, the morphological data are automatically assigned
+### Step 1. Set up MrBayes to do the ancestral reconstructions
+
+Here is an example [dataset](data/mix.nex) with combined DNA and morphological
+data.  When reading the data, the morphological data are automatically assigned
 to a separate partition (number 2). We will define one specific node where
-ancestral states should be estimated, then tell MrBayes to report the
-ancestral states for all characters in partition 2. The `Lset coding=variable`
-command is for accounting for coding bias in the morphological data. See
-the MrBayes manual for explanation. Also note that on your data, you might
-want to change default settings on substitution models, MCMC, etc.
+ancestral states should be estimated, then tell MrBayes to report the ancestral
+states for all characters in partition 2. The `Lset coding=variable` command is
+for accounting for coding bias in the morphological data (see the MrBayes
+manual for explanation). Also note that with your data, you might want to
+change default settings on substitution models, MCMC, etc.
+
+Exectute the following commands in MrBayes:
 
     #NEXUS
     Begin MrBayes;
@@ -33,12 +37,11 @@ want to change default settings on substitution models, MCMC, etc.
         Quit;
     End;
 
+### Step 2. Parse the output from MrBayes
 
-## Parse the output from MrBayes
-
-Run the script with the `.pstat` file as input. The resulting sequence is written
-to standard out, while the details about state probabilities is printed on standard
-error:
+Run the `parsemb.pl` script with the `.pstat` file as input. The resulting
+sequence is written to standard out, while the details about state
+probabilities is printed on standard error:
 
     $ ./parsemb.pl data/mix.nex.pstat
     # MyConstraint
@@ -56,13 +59,12 @@ separate files:
 
     $ ./parsemb.pl data/mix.nex.pstat > ancestral.fas 2> ancestral.txt
 
-
 ## Example 2: Ancestral sequence estimation
 
 Here we will report the ancestral sequence for a specific node in the tree.
 We will use an example [file](data/dna.nex) with DNA data.
 
-#### MrBayes commands:
+### MrBayes commands:
 
     #NEXUS
     Begin MrBayes;
@@ -77,7 +79,7 @@ We will use an example [file](data/dna.nex) with DNA data.
         Quit;
     End;
 
-#### Run the script:
+### Run the script:
 
 Here we redirect the table to `/dev/null`, and fold the long sequence using the
 unix command `fold`:
@@ -92,9 +94,10 @@ unix command `fold`:
     GAACAGGCCAAAAAGATGAACGTAGCTTCTCTACGTTCATCTGACAATGCAAACACAAGTGCTGAGCATAAACTCGCAAA
     GGTA
 
-Alternatively, we may filter the ancestral sequence and say, for example, that we
-should only give the states where the pp is above 0.99. The other states are given
-as an "unknown" character (default is "`?`", here we will use `N`):
+**Alternatively**, we may filter the ancestral sequence and say, for example, that
+we should only report the states where the posterior probability is above 0.99.
+The other states are given as an "unknown" character (default is "`?`", here we
+will use `N`):
 
     $ ./parsemb.pl --cutoff 0.99 --unknown N data/dna.nex.pstat 2> /dev/null | fold
     >MyConstraint Ancestral states at node MyConstraint
@@ -113,7 +116,7 @@ Thanks to Dr. Robin Beck, Univ. Salford, for feature suggestions.
 
 ## Licence and copyright
 
-Copyright (c) 2018-2020 Johan Nylander
+Copyright (c) 2018-2022 Johan Nylander
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
